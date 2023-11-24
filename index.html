@@ -1,12 +1,29 @@
 <!DOCTYPE html>
 <html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-</head>
-<body>
-    
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista zakupów</title>
+  </head>
+  <body>
+    <header>
+      <h1>Lista zakupów</h1>
+    </header>
+    <main>
+      <section>
+        <ul id="items-list">
+          <li><input type="checkbox" />pierwszy produkt</li>
+          <li>drugi produkt</li>
+          <li>trzeci produkt</li>
+        </ul>
+      </section>
+      <section>
+        <input id="new-item" />
+        <button id="add-item-btn">Dodaj</button>
+        <button id="clear-marked-btn">Usuń zaznaczone</button>
+      </section>
+    </main>
+    <script src="src/script.js"></script>
+  </body>
 </html>
