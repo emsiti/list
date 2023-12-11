@@ -1,12 +1,19 @@
 const itemsList = document.getElementById("items-list");
 const addItemBtn = document.getElementById("add-item-btn");
-const clearMarkedBtn = document.getElementById("clear-marked-btn");
+const removeMarkedBtn = document.getElementById("clear-marked-btn");
 const newItemInput = document.getElementById("new-item");
 const items = [
   { name: "chleb", marked: false },
   { name: "szynka", marked: true },
   { name: "mleko", marked: false },
+  { name: "masło", marked: false },
+  { name: "kurczak", marked: false },
+  { name: "parówki", marked: false },
 ];
+
+addItemBtn.addEventListener("click", addItem);
+removeMarkedBtn.addEventListener("click", removeMarked);
+itemsList.addEventListener("click", handleCheckbox);
 
 function displayItems() {
   itemsList.innerHTML = "";
@@ -19,31 +26,40 @@ function displayItems() {
     checkbox.checked = item.marked;
     li.prepend(checkbox);
   });
-  addListener();
 }
 
 displayItems();
 
 function addItem() {
-  items.push({ name: newItemInput.value, marked: false });
-  newItemInput.value = "";
+  if (newItemInput.value) {
+    items.push({ name: newItemInput.value, marked: false });
+    newItemInput.value = "";
+  }
   displayItems();
 }
 
-function addListener() {
-  itemsList.childNodes.forEach((item) => {
-    item.childNodes[0].addEventListener("click", changeMarked);
-  });
+function removeMarked() {
+  for (let i = 0; i < items.length; i++) {
+    console.log(items[i]);
+    if (items[i].marked) {
+      items.splice(i, 1);
+      i--;
+    }
+  }
+  displayItems();
 }
 
-addItemBtn.addEventListener("click", addItem);
-
-function checkIndex(e) {
+function checkItemsIndex(e) {
   return Array.from(e.target.parentNode.parentNode.children).indexOf(
     e.target.parentNode
   );
 }
 
-function changeMarked(e) {
-  items[checkIndex(e)].marked = !items[checkIndex(e)].marked;
+function changeMarker(e) {
+  items[checkItemsIndex(e)].marked = !items[checkItemsIndex(e)].marked;
+}
+
+function handleCheckbox(e) {
+  if (e.target.tagName != "INPUT") return;
+  changeMarker(e);
 }
