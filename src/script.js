@@ -15,38 +15,49 @@ addItemBtn.addEventListener("click", addItem);
 removeMarkedBtn.addEventListener("click", removeMarked);
 itemsList.addEventListener("click", handleCheckbox);
 
-function displayItems() {
+function displayList() {
   itemsList.innerHTML = "";
+  sortItems();
   items.forEach((item) => {
-    const li = document.createElement("li");
-    const checkbox = document.createElement("input");
-    li.textContent = item.name;
-    itemsList.appendChild(li);
-    checkbox.type = "checkbox";
-    checkbox.checked = item.marked;
-    li.prepend(checkbox);
+    itemsList.appendChild(createListItem(item));
   });
 }
 
-displayItems();
+function createListItem(item) {
+  const li = document.createElement("li");
+  const checkbox = document.createElement("input");
+  li.textContent = item.name;
+  checkbox.checked = item.marked;
+  checkbox.type = "checkbox";
+  checkbox.name = "item";
+  li.prepend(checkbox);
+  return li;
+}
+
+function sortItems() {
+  items.sort(function compare(a, b) {
+    return a.marked - b.marked;
+  });
+}
+
+displayList();
 
 function addItem() {
   if (newItemInput.value) {
     items.push({ name: newItemInput.value, marked: false });
     newItemInput.value = "";
   }
-  displayItems();
+  displayList();
 }
 
 function removeMarked() {
   for (let i = 0; i < items.length; i++) {
-    console.log(items[i]);
     if (items[i].marked) {
       items.splice(i, 1);
       i--;
     }
   }
-  displayItems();
+  displayList();
 }
 
 function checkItemsIndex(e) {
@@ -57,6 +68,7 @@ function checkItemsIndex(e) {
 
 function changeMarker(e) {
   items[checkItemsIndex(e)].marked = !items[checkItemsIndex(e)].marked;
+  displayList();
 }
 
 function handleCheckbox(e) {
