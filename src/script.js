@@ -10,13 +10,30 @@ const items = [
   { name: "kurczak", marked: false },
   { name: "parówki", marked: false },
 ];
+const storedItems = [];
 
 addItemBtn.addEventListener("click", addItem);
 removeMarkedBtn.addEventListener("click", removeMarked);
 itemsList.addEventListener("click", handleCheckbox);
 
+function storeItems() {
+  localStorage.storedItems = JSON.stringify(items);
+}
+
+function getItems() {
+  items.length = 0;
+  JSON.parse(localStorage.getItem("storedItems")).forEach((item) => {
+    items.push(item);
+  });
+}
+
+displayList();
+
 function displayList() {
   itemsList.innerHTML = "";
+  if (localStorage.storedItems) {
+    getItems();
+  }
   sortItems();
   items.forEach((item) => {
     itemsList.appendChild(createListItem(item));
@@ -40,13 +57,12 @@ function sortItems() {
   });
 }
 
-displayList();
-
 function addItem() {
   if (newItemInput.value) {
     items.push({ name: newItemInput.value, marked: false });
     newItemInput.value = "";
   }
+  storeItems();
   displayList();
 }
 
@@ -57,6 +73,7 @@ function removeMarked() {
       i--;
     }
   }
+  storeItems();
   displayList();
 }
 
@@ -68,6 +85,7 @@ function checkItemsIndex(e) {
 
 function changeMarker(e) {
   items[checkItemsIndex(e)].marked = !items[checkItemsIndex(e)].marked;
+  storeItems();
   displayList();
 }
 
